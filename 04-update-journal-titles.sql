@@ -1,10 +1,13 @@
 update journal
-set title = coalesce(c_title, i_title)
+set
+    title = btrim(coalesce(c_title, i_title), '"'),
+    publisher = btrim(c_publisher, '"')
 from (
     select
         issn_l,
         c.title as c_title,
-        i.title as i_title
+        i.title as i_title,
+        c.publisher as c_publisher
     from
         journal j
         left join journal_crossref_titles c using (issn_l)
