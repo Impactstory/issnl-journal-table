@@ -1,3 +1,6 @@
+-- set journal title and publisher from crossref or issn metadata
+-- journal_*_titles view definitions are in this repo
+
 update journal
 set
     title = btrim(coalesce(c_title, i_title), '"'),

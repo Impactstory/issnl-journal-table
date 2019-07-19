@@ -108,6 +108,7 @@ if __name__ == "__main__":
 
         safe_commit(db)
 
-        db.session.remove()
-        print 'finished update'
+    db.session.remove()
+
+    print 'finished update'
 

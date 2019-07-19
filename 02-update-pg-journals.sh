@@ -1,6 +1,7 @@
 #!/bin/bash
 
-### get issn to issn-l mapping used by our dois
+# get issn to issn-l mapping used by our dois from bq
+# save the issn-l and associated issns in the pg journal table
 
 echo extracting view to temp table
 
@@ -33,7 +34,7 @@ local_csv=$workdir/our-issn-to-issnl.csv
 echo "downloading $gcs_csv -> $local_csv"
 gsutil cp $gcs_csv $local_csv
 
-### use downloaded issn to issl mappings to update journal table
+echo updating pg journal table
 
 sed "s|_ISSN_CSV_|$local_csv|" update-journal.sql |
     psql -h ec2-18-205-92-196.compute-1.amazonaws.com \

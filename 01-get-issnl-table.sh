@@ -1,11 +1,16 @@
 #!/bin/bash
 
+# retrieve issn to issn-l mappings from issn.org
+# load them to bigquery and postgres
+
+
 workdir=$(mktemp -d)
 
 echo "*** working in $workdir ***"
 
 echo "*** getting issn to issn-l map file ***"
 
+# date in file URL is static but file is updated daily
 wget \
     --directory=$workdir \
     --no-check-certificate \
