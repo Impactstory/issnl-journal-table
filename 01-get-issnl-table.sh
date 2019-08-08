@@ -3,7 +3,7 @@
 # retrieve issn to issn-l mappings from issn.org
 # load them to bigquery and postgres
 
-${DATABASE_URL:?environment variable must be set}
+: ${DATABASE_URL:?environment variable must be set}
 
 workdir=$(mktemp -d)
 echo "*** working in $workdir ***"
