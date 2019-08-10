@@ -53,5 +53,5 @@ bq load \
     --source_format=CSV \
     --field_delimiter '\t' \
     --schema 'issn:string,issn_l:string' \
-    'richard.issn_to_issnl' \
+    'journals.issn_to_issnl' \
     $map_file

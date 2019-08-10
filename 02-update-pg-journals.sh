@@ -10,14 +10,14 @@
 
 echo extracting view to temp table
 
-bq_temp_table="richard.tmp_our_issns_$RANDOM"
+bq_temp_table="journals.tmp_our_issns_$RANDOM"
 
 bq query \
     --project_id='unpaywall-bhd' \
     --use_legacy_sql=false \
     --destination_table=$bq_temp_table \
     --max_rows=0 \
-    "select * from richard.our_issn_to_issnl"
+    "select * from journals.our_issn_to_issnl"
 
 # extract the mapping file to CSV and delete the temp table
 
