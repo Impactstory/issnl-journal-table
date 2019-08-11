@@ -13,6 +13,7 @@ echo extracting view to temp table
 bq_temp_table="journals.tmp_our_issns_$RANDOM"
 
 bq query \
+    --headless --quiet \
     --project_id='unpaywall-bhd' \
     --use_legacy_sql=false \
     --destination_table=$bq_temp_table \
@@ -26,6 +27,7 @@ echo exporting temp table to gcs
 gcs_csv="gs://unpaywall-grid/issn-to-issnl-$RANDOM.csv"
 
 bq extract \
+    --headless --quiet \
     --project_id='unpaywall-bhd' \
     --format=csv \
     $bq_temp_table \

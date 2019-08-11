@@ -16,6 +16,7 @@ echo "*** getting issn to issn-l map file ***"
 wget \
     --directory=$workdir \
     --no-check-certificate \
+    --no-verbose \
     https://www.issn.org/wp-content/uploads/2014/03/issnltables.zip
 
 unzip $workdir/issnltables.zip -d $workdir
@@ -48,6 +49,7 @@ echo "*** loading mappings to bigquery ***"
 
 bq load \
     --project_id='unpaywall-bhd' \
+    --headless --quiet \
     --replace \
     --skip_leading_rows=1 \
     --source_format=CSV \
