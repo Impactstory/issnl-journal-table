@@ -62,3 +62,5 @@ from (
         left join issn_org_info i using (issn_l)
 ) x
 where journal.issn_l = x.issn_l;
+
+delete from journal where publisher ~* 'crossref test';
