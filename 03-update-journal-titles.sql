@@ -4,8 +4,8 @@ with
 
 crossref_info as (
     select journal.issn_l,
-        (journal.api_raw_crossref->'message')->>'title' as title,
-        (journal.api_raw_crossref->'message')->>'publisher' as publisher
+        btrim((journal.api_raw_crossref->'message')->>'title') as title,
+        btrim((journal.api_raw_crossref->'message')->>'publisher') as publisher
     from journal
 ),
 
