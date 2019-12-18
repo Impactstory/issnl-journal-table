@@ -8,3 +8,10 @@ insert into issn_to_issnl (issn, issn_l) (
 ) on conflict (issn) do update
     set issn_l = excluded.issn_l
 ;
+
+insert into issn_to_issnl (issn, issn_l) (
+    select issn, issn_l
+    from issn_to_issnl_manual
+) on conflict (issn) do update
+    set issn_l = excluded.issn_l
+;
