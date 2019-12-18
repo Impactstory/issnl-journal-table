@@ -43,6 +43,9 @@ echo "*** loading mappings to postgres ***"
 
 sed "s|_MAP_FILE_|$map_file|" load-issnl-map.sql | psql $DATABASE_URL
 
+pg_map_file=$workdir/pg-issn-table.csv
+psql $DATABASE_URL -c "\\copy issn_to_issnl to $pg_map_file csv header"
+
 # replace mappings in bigquery
 
 echo "*** loading mappings to bigquery ***"
@@ -53,7 +56,7 @@ bq load \
     --replace \
     --skip_leading_rows=1 \
     --source_format=CSV \
-    --field_delimiter '\t' \
+    --field_delimiter ',' \
     --schema 'issn:string,issn_l:string' \
     'journals.issn_to_issnl' \
-    $map_file
+    $pg_map_file
