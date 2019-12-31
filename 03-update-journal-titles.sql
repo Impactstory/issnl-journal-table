@@ -53,18 +53,21 @@ issn_org_info as (
 
 update journal
 set
-    title = pg_temp.remove_ctrl_chars(btrim(coalesce(c_title, i_title), '"')),
-    publisher = pg_temp.remove_ctrl_chars(btrim(c_publisher, '"'))
+    title = coalesce(m_title, pg_temp.remove_ctrl_chars(btrim(coalesce(c_title, i_title), '"'))),
+    publisher = coalesce(m_publisher, pg_temp.remove_ctrl_chars(btrim(c_publisher, '"')))
 from (
     select
         issn_l,
         c.title as c_title,
         i.title as i_title,
-        c.publisher as c_publisher
+        c.publisher as c_publisher,
+        m.title as m_title,
+        m.publisher as m_publisher
     from
         journal j
         left join crossref_info c using (issn_l)
         left join issn_org_info i using (issn_l)
+        left join journal_properties_manual m using (issn_l)
 ) x
 where journal.issn_l = x.issn_l;
 
