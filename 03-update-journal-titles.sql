@@ -1,5 +1,10 @@
 -- set journal title and publisher from crossref or issn metadata
 
+create function pg_temp.remove_ctrl_chars(text) returns text as
+    $$ select regexp_replace($1, '[\u0000-\u001F\u007F\u0080-\u009F]', '', 'g') $$
+    language sql immutable
+;
+
 with
 
 crossref_info as (
@@ -48,8 +53,8 @@ issn_org_info as (
 
 update journal
 set
-    title = btrim(coalesce(c_title, i_title), '"'),
-    publisher = btrim(c_publisher, '"')
+    title = pg_temp.remove_ctrl_chars(btrim(coalesce(c_title, i_title), '"')),
+    publisher = pg_temp.remove_ctrl_chars(btrim(c_publisher, '"'))
 from (
     select
         issn_l,
