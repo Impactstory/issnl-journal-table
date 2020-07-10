@@ -13,3 +13,13 @@ insert into journal (issn_l, issns) (
     set issns = excluded.issns
 ;
 
+create temp table all_issn_l_to_issn as (
+    select
+        issn_l,
+        jsonb_agg(to_jsonb(issn)) as issns
+    from issn_to_issnl
+    where issn_l is not null
+    group by issn_l
+);
+
+update journal set issns = all_issn_l_to_issn.issns from all_issn_l_to_issn where journal.issn_l = all_issn_l_to_issn.issn_l;
