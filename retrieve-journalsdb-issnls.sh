@@ -16,7 +16,7 @@ echo "*** $0 working in $workdir ***"
 journalsdb_page=1
 
 while [ -z "$journalsdb_max_page" ] || [ "$journalsdb_page" -le "$journalsdb_max_page" ]; do
-    journalsdb_url="https://api.journalsdb.org/journals-paged?attrs=issn_l,issns&page=$journalsdb_page&per-page=100"
+    journalsdb_url="https://api.journalsdb.org/journals-paged?attrs=id,issn_l,issns&page=$journalsdb_page&per-page=100"
     out_file="$workdir/page-$journalsdb_page.json"
 
     echo "($journalsdb_page / $journalsdb_max_page) $journalsdb_url > $out_file"

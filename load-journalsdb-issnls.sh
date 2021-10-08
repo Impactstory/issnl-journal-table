@@ -43,7 +43,7 @@ psql $DATABASE_URL <<SQL
 
     \\echo extracting journal objects
 
-    create temp table tmp_journalsdb_journals (issn_l text, issns jsonb);
+    create temp table tmp_journalsdb_journals (issn_l text, issns jsonb, id text);
 
     insert into tmp_journalsdb_journals (
         select * from jsonb_populate_recordset(null::tmp_journalsdb_journals, (select journals_object->'journals' from tmp_journalsdb_file))
@@ -53,14 +53,14 @@ psql $DATABASE_URL <<SQL
 
     create temp table tmp_issn_to_issn_l (like $pg_issn_table);
 
-    insert into tmp_issn_to_issn_l (
-        select jsonb_array_elements_text(issns) as issn, issn_l from tmp_journalsdb_journals
+    insert into tmp_issn_to_issn_l (issn, issn_l, journalsdb_id) (
+        select jsonb_array_elements_text(issns) as issn, issn_l, id as journalsdb_id from tmp_journalsdb_journals
     );
 
     delete from $pg_issn_table;
 
-    insert into $pg_issn_table (
-        select issn, max(issn_l) from tmp_issn_to_issn_l group by 1
+    insert into $pg_issn_table (issn, issn_l, journalsdb_id) (
+        select issn, max(issn_l), max(journalsdb_id) from tmp_issn_to_issn_l group by 1
     );
 
     \\echo updating journal table
